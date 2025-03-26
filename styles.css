@@ -10,10 +10,11 @@
     --fill-color-icon: white;
 
     --color-primario: black;
-    --color-secundario: white;
+    --color-secundario: #ececec;
+    --background-chat: #212121;
 
-    --color-message-ia: rgba(96, 174, 165, 0.575);
-    --color-message-us:  rgba(89, 196, 245, 0.442);
+    --color-message-ia: #ececec;
+    --color-message-us:  rgba(50, 50, 50, .85);
 }
 :root[data-theme="dark"]{
     --sun-icon-show: block;
@@ -23,8 +24,8 @@
     --color-primario: white;
     --color-secundario: black;
 
-    --color-message-ia: rgba(113, 244, 229, 0.364);
-    --color-message-us:  rgba(89, 200, 252, 0.282);
+    --color-message-ia: var(--background-chat);
+    --color-message-us:  rgba(220, 216, 216, 0.85);
 }
 
 body{
@@ -32,7 +33,7 @@ body{
     place-content: center;
     height: 100dvh;
     font-family: 'Poppins', sans-serif;
-    background-color: var(--color-primario);
+    background-color: var(--background-chat);
     transition: color-primario 0.5s;
 }
 
@@ -41,13 +42,14 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 70px;
 }
-
 h1{
     color: var(--color-secundario);
     font-size: 1.5rem;
     font-weight: 800;
 }
+
 .toggle-node{
     width: 40px;
     height: 40px;
@@ -63,29 +65,26 @@ h1{
     background-color: rgba(98, 96, 96, 0.285);
     cursor: pointer;
 }
-
 .img-mode{
     grid-area: imagen;
     fill: var(--fill-color-icon);
 }
-
 .light{
     display: var(--moon-icon-show);
 }
-
 .dark{
     display: var(--sun-icon-show);
 }
 
 /* main */
-main{
-    width: 500px;
+.chat{
+    width: 1200px;
     max-width: 100%;
     height: 70vh;
 
-    border: 1px solid var(--color-secundario);
+    /* border: 1px solid var(--color-secundario); */
     border-radius: 5px;
-    box-shadow: 0 0 10px var(--color-message);
+    /* box-shadow: 0 0 10px var(--color-message); */
     padding: 20px;
     margin-bottom: 1rem;
 
@@ -95,6 +94,8 @@ ul{
     display: flex;
     flex-direction: column;
     list-style: none;
+    gap: 10px;
+    margin: 0 10rem;
     color: var(--color-secundario);
 }
 .message{
@@ -104,24 +105,16 @@ ul{
     margin: 4px 0;
     padding: 5px 8px;
 }
-.message span:first-child{
-    width: 36px;
-    height: 36px;
-    font-size: 12px;
-    font-weight: 500;
-    display: flex;
-    justify-self: unset;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-}
 
 .message p{
-    border-radius: 5px;
-    padding: 5px 10px;
+    border-radius: 30px;
+    padding: 15px 20px;
+    max-width: 70%;
+    /* word-wrap: break-word; */
+
 }
-.bot > span, .bot > p{
-    background-color: var(--color-message-ia);
+.bot > p{
+    color: var(--color-message-ia);
     align-self: flex-start;
 }
 
@@ -129,7 +122,7 @@ ul{
     align-self: flex-end;
     align-items: flex-end;
 }
-.user > span, .user > p{
+.user > p{
     background-color: var(--color-message-us);
 }
 
@@ -153,7 +146,6 @@ footer{
     justify-content: center;
     align-items: center;
     height: 50px;
-    background-color: var(--color-primario);
     color: var(--color-secundario);
 }
 footer p{
