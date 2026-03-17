@@ -1,44 +1,87 @@
-const buttonToggle = document.querySelector('.toggle-node');
-const root = document.documentElement;
+const App = {
+    //Selectores de elementos
+    elements: {
+        root: document.documentElement,
+        themeBtn: document.querySelector('.toggle-theme'),
+        chatForm: document.querySelector('#chat-form'),
+        userInput: document.querySelector('#user-input'),
+        chatList: document.querySelector('#chat-list'),
+        messagesArea: document.querySelector('#messages-area'),
+        template: document.querySelector('#message-template')
+    },
 
-const form = document.querySelector('.form');
-const input = document.querySelector('.input');
-const chatList = document.querySelector('.chat ul');
-const template = document.querySelector('#chat-template');
+    //Inicialización
+    init() {
+        this.bindEvents();
+        this.loadTheme();
+    },
 
+    //Eventos
+    bindEvents() {
+        // Cambio de tema
+        this.elements.themeBtn.addEventListener('click', () => this.toggleTheme());
 
-buttonToggle.addEventListener('click', function(){
-    if(root.dataset.theme === 'light'){
-        root.dataset.theme = 'dark';
-    } else{
-        root.dataset.theme = 'light';
-    }
-});
+        // Envío de mensaje
+        this.elements.chatForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.handleUserMessage();
+        });
+    },
 
-form.addEventListener('submit', function(e){
-    e.preventDefault();
-    const messageText = input.value.trim();
+    //Funciones de Tema
+    toggleTheme() {
+        const currentTheme = this.elements.root.dataset.theme;
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        this.elements.root.dataset.theme = newTheme;
+        localStorage.setItem('theme', newTheme);
+    },
 
-    if(messageText !== ""){
-        addMessage(messageText, 'user');
-        input.value = '';
+    loadTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        this.elements.root.dataset.theme = savedTheme;
+    },
+
+    //Funciones de Chat
+    handleUserMessage() {
+        const text = this.elements.userInput.value.trim();
+        
+        if (text) {
+            this.renderMessage(text, 'user');
+            this.elements.userInput.value = '';
+            
+            // Simular respuesta del Bot
+            this.showTypingIndicator();
+        }
+    },
+
+    renderMessage(text, sender) {
+        const { template, chatList, messagesArea } = this.elements;
+        
+        const clone = template.content.cloneNode(true);
+        const li = clone.querySelector('.message');
+        const p = clone.querySelector('p');
+
+        li.classList.add(sender);
+        p.textContent = text;
+
+        chatList.appendChild(clone);
+        
+        // Scroll automático
+        messagesArea.scrollTo({
+            top: messagesArea.scrollHeight,
+            behavior: 'smooth'
+        });
+    },
+
+    showTypingIndicator() {
+        // Simulación de "pensamiento" del bot
         setTimeout(() => {
-            addMessage("Esta es una respuesta automática del clon.", 'bot');
-        }, 1000);
+            this.renderMessage("¡Hola! Soy tu asistente. Has escrito un mensaje con " + 
+            "éxito en este clon profesional.", 'bot');
+        }, 800);
     }
-});
+};
 
-function addMessage(text, sender) {
-    const clone = template.content.cloneNode(true);
-    const li = clone.querySelector('li');
-    const p = clone.querySelector('p');
-
-    li.classList.add(sender);
-    p.textContent = text;
-
-    chatList.appendChild(clone);
-    
-    // Auto-scroll al último mensaje
-    const chatContainer = document.querySelector('.chat');
-    chatContainer.scrollTop = chatContainer.scrollHeight;
-}
+// Arrancar la aplicación
+document.addEventListener('DOMContentLoaded', () => App.init());
